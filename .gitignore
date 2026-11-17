@@ -1,0 +1,24 @@
+# Cau hinh rieng va thong tin dang nhap
+.env
+.env.*
+!.env.example
+*.conf
+*.conf.*
+!config/odoo.conf.example
+.pgpass
+pgpass.conf
+
+# Backup, du lieu Odoo/PostgreSQL va log
+backups/
+filestore/
+data/
+*.dump
+*.backup
+*.sql
+*.zip
+*.log
+
+# Tep Python sinh ra tren may
+__pycache__/
+*.py[cod]
+.venv/

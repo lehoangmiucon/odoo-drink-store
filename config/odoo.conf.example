@@ -1,0 +1,6 @@
+[options]
+; Mẫu tham khảo. Sửa file đang được dịch vụ Odoo đọc trên máy.
+; Nối custom_addons vào danh sách addons_path hiện có, phân tách bằng dấu phẩy.
+; Thay đường dẫn dự án bằng vị trí clone trên máy của bạn.
+; addons_path = DUONG_DAN_ADDONS_HIEN_CO,D:\odoo-drink-store\custom_addons
+; Giữ các thiết lập kết nối và mật khẩu trên máy cục bộ.
