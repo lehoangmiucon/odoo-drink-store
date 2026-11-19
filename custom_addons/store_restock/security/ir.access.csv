@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,operation,domain
+access_restock_reject_manager,Từ chối phiếu,model_store_restock_reject_wizard,group_restock_manager,crud,

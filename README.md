@@ -1,6 +1,8 @@
 # Quản lý bán hàng và tồn kho cửa hàng đồ uống
 
-Dự án nhóm triển khai trên Odoo Community với Contacts, Purchase, Inventory và Point of Sale. Phần tùy chỉnh dự kiến là module yêu cầu bổ sung hàng tại `custom_addons/store_restock/`.
+Dự án nhóm triển khai trên Odoo Community với Contacts, Purchase, Inventory và Point of Sale. Phần tùy chỉnh đã triển khai trên máy Trọng là module yêu cầu bổ sung hàng tại `custom_addons/store_restock/`, phiên bản `20.0.1.0.0`.
+
+Hướng dẫn lấy mã và cài trên máy thành viên nằm trong [hướng dẫn cài đặt](docs/huong-dan-cai-dat.md). [Kết quả ngày 19/11](docs/ket-qua-2026-11-19.md) ghi các ca đã chạy và thông tin backup.
 
 ## Môi trường
 
@@ -19,7 +21,7 @@ Tài liệu kế hoạch ghi Odoo 19.0. Nhóm cần chốt phiên bản chạy t
 1. Cài Odoo Community và PostgreSQL theo phiên bản nhóm chốt. Mở PowerShell ở thư mục muốn lưu dự án rồi chạy `git clone https://github.com/lehoangmiucon/odoo-drink-store.git`.
 2. Mở `services.msc`. Kiểm tra dịch vụ PostgreSQL mà Odoo sử dụng đã chạy, rồi kiểm tra dịch vụ Odoo. Bật các dịch vụ đang dừng. Trên máy chuẩn bị, tên dịch vụ Odoo là `odoo-server-20.0`.
 3. Khi cần nạp module của nhóm, mở file `odoo.conf` mà dịch vụ đang dùng. Trên máy chuẩn bị, file nằm ở `C:\Program Files\Odoo 20.0.20261115\server\odoo.conf`. Nối đường dẫn tuyệt đối của `custom_addons` vào cuối dòng `addons_path`, sau dấu phẩy. Xem `config/odoo.conf.example` để biết dạng cấu hình. Khởi động lại dịch vụ Odoo sau khi lưu. Dịch vụ cần có quyền đọc thư mục clone.
-4. Mở `http://localhost:8069/odoo/apps`, đăng nhập và kiểm tra màn hình Ứng dụng tải được. Khi module có `__manifest__.py`, bật chế độ nhà phát triển rồi vào Ứng dụng → Cập nhật danh sách ứng dụng và tìm `store_restock`. Bỏ bộ lọc Ứng dụng khi cần tìm theo tên kỹ thuật.
+4. Mở `http://localhost:8069/odoo/apps`, đăng nhập đúng database. Bật chế độ nhà phát triển rồi vào Ứng dụng → Cập nhật danh sách ứng dụng và tìm `store_restock`. Bỏ bộ lọc Ứng dụng khi cần tìm theo tên kỹ thuật. Cài module rồi cấp nhóm quyền theo hướng dẫn cài đặt.
 
 ## Sao lưu database
 

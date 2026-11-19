@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="privilege_restock_employee" model="res.groups.privilege">
+        <field name="name">Bổ sung hàng — Nhân viên</field>
+    </record>
+    <record id="privilege_restock_manager" model="res.groups.privilege">
+        <field name="name">Bổ sung hàng — Quản lý</field>
+    </record>
+    <record id="group_restock_employee" model="res.groups">
+        <field name="name">Nhân viên kho</field>
+        <field name="privilege_id" ref="privilege_restock_employee"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+    <record id="group_restock_manager" model="res.groups">
+        <field name="name">Quản lý bổ sung hàng</field>
+        <field name="privilege_id" ref="privilege_restock_manager"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+    <record id="rule_restock_company" model="ir.access">
+        <field name="name">Phiếu trong công ty được phép</field>
+        <field name="model_id" ref="model_store_restock_request"/>
+        <field name="operation">cru</field>
+        <field name="domain">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_restock_employee" model="ir.access">
+        <field name="name">Nhân viên xem phiếu của mình</field>
+        <field name="model_id" ref="model_store_restock_request"/>
+        <field name="group_id" ref="group_restock_employee"/>
+        <field name="operation">cru</field>
+        <field name="domain">[('requester_id', '=', user.id)]</field>
+    </record>
+    <record id="rule_restock_manager" model="ir.access">
+        <field name="name">Quản lý xem phiếu cửa hàng</field>
+        <field name="model_id" ref="model_store_restock_request"/>
+        <field name="group_id" ref="group_restock_manager"/>
+        <field name="operation">ru</field>
+    </record>
+</odoo>
