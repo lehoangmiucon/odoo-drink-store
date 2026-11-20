@@ -19,7 +19,7 @@
     <record id="rule_restock_company" model="ir.access">
         <field name="name">Phiếu trong công ty được phép</field>
         <field name="model_id" ref="model_store_restock_request"/>
-        <field name="operation">cru</field>
+        <field name="operation">crud</field>
         <field name="domain">[('company_id', 'in', company_ids)]</field>
     </record>
     <record id="rule_restock_employee" model="ir.access">
@@ -34,5 +34,19 @@
         <field name="model_id" ref="model_store_restock_request"/>
         <field name="group_id" ref="group_restock_manager"/>
         <field name="operation">ru</field>
+        <field name="domain">['|', ('requester_id', '=', user.id), ('state', '!=', 'draft')]</field>
+    </record>
+    <record id="access_restock_admin_delete" model="ir.access">
+        <field name="name">Quản trị viên xóa phiếu</field>
+        <field name="model_id" ref="model_store_restock_request"/>
+        <field name="group_id" ref="base.group_system"/>
+        <field name="operation">d</field>
+    </record>
+    <record id="access_restock_employee_delete" model="ir.access">
+        <field name="name">Nhân viên xóa phiếu nháp và chờ duyệt của mình</field>
+        <field name="model_id" ref="model_store_restock_request"/>
+        <field name="group_id" ref="group_restock_employee"/>
+        <field name="operation">d</field>
+        <field name="domain">[('requester_id', '=', user.id), ('state', 'in', ['draft', 'submitted'])]</field>
     </record>
 </odoo>

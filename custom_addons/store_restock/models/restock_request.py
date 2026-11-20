@@ -30,12 +30,13 @@ class RestockRequest(models.Model):
     reason = fields.Text(string='Lý do yêu cầu')
     state = fields.Selection(
         [('draft', 'Nháp'), ('submitted', 'Chờ duyệt'),
-         ('approved', 'Đã duyệt'), ('rejected', 'Từ chối')],
+         ('approved', 'Đã duyệt'), ('rejected', 'Từ chối'), ('cancelled', 'Đã hủy')],
         string='Trạng thái', default='draft', required=True, readonly=True, copy=False,
     )
     reviewer_id = fields.Many2one('res.users', string='Người xử lý', readonly=True, copy=False)
     reviewed_at = fields.Datetime(string='Thời gian xử lý', readonly=True, copy=False)
     rejection_reason = fields.Text(string='Lý do từ chối', readonly=True, copy=False)
+    cancelled_at = fields.Datetime(string='Thời gian rút yêu cầu', readonly=True, copy=False)
 
     def _require_employee(self):
         if not self.env.user.has_group('store_restock.group_restock_employee'):
@@ -70,6 +71,7 @@ class RestockRequest(models.Model):
             'reviewer_id': False,
             'reviewed_at': False,
             'rejection_reason': False,
+            'cancelled_at': False,
         }
         prepared = []
         for vals in vals_list:
@@ -90,6 +92,7 @@ class RestockRequest(models.Model):
                 'reviewer_id': False,
                 'reviewed_at': False,
                 'rejection_reason': False,
+                'cancelled_at': False,
             })
         return super().create(prepared)
 
@@ -101,7 +104,15 @@ class RestockRequest(models.Model):
         return super().write(vals)
 
     def unlink(self):
-        raise AccessError('Phiếu được giữ lại để theo dõi lịch sử và không được xóa.')
+        if not self.env.user.has_group('base.group_system'):
+            self._require_employee()
+            self._lock_records()
+            for request in self:
+                if request.requester_id != self.env.user:
+                    raise AccessError('Chỉ được xóa phiếu do mình tạo.')
+                if request.state not in ('draft', 'submitted'):
+                    raise AccessError('Chỉ được xóa phiếu nháp và phiếu chờ duyệt')
+        return super().unlink()
 
     def copy(self, default=None):
         self.ensure_one()
@@ -118,6 +129,19 @@ class RestockRequest(models.Model):
             if not (request.reason or '').strip():
                 raise ValidationError('Hãy nhập lý do yêu cầu trước khi gửi duyệt.')
         return super().write({'state': 'submitted'})
+
+    def action_cancel(self):
+        self._require_employee()
+        self._lock_records()
+        for request in self:
+            if request.requester_id != self.env.user:
+                raise AccessError('Chỉ được rút yêu cầu do mình tạo.')
+            if request.state != 'submitted':
+                raise UserError('Chỉ được rút phiếu đang Chờ duyệt.')
+        return super().write({
+            'state': 'cancelled',
+            'cancelled_at': fields.Datetime.now(),
+        })
 
     def _check_review(self):
         if not self.env.user.has_group('store_restock.group_restock_manager'):

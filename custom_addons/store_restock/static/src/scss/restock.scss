@@ -1,0 +1,82 @@
+// Keep styling within this addon; native selection and responsive sizing remain.
+.o_restock_list {
+    .o_list_renderer {
+        width: calc(100% - 32px);
+        max-width: 1320px;
+        margin: 16px auto;
+        border: 1px solid var(--border-color, #dee2e6);
+        border-radius: 8px;
+        background: var(--o-view-background-color, #fff);
+        overflow: auto;
+    }
+
+    .o_list_table {
+        min-width: 940px;
+
+        thead th {
+            padding-block: 14px;
+        }
+
+        // Remove drag handles and sorting affordances only from this list.
+        thead .o_resize,
+        thead .o_list_sortable_icon,
+        thead .o_list_header_label_spacer {
+            display: none;
+        }
+
+        .o_data_row > td {
+            padding-block: 14px;
+            vertical-align: middle;
+        }
+
+        // Align this column with the other fields, as requested for this list.
+        th[data-name="quantity"] .o_list_number_th,
+        .o_data_row > td.o_list_number[name="quantity"] {
+            text-align: left;
+        }
+
+        td[name="quantity"] {
+            font-variant-numeric: tabular-nums;
+            font-weight: 600;
+        }
+
+        .o_field_badge .badge {
+            padding: 6px 10px;
+            font-weight: 600;
+        }
+    }
+}
+
+.o_restock_form {
+    .o_form_sheet {
+        max-width: 1120px;
+    }
+
+    .oe_title {
+        margin-bottom: 24px;
+    }
+
+    .o_restock_details {
+        column-gap: 40px;
+    }
+
+    .o_restock_reason {
+        margin-block: 8px 24px;
+
+        > label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        textarea {
+            min-height: 96px;
+            resize: vertical;
+        }
+    }
+
+    .o_restock_result {
+        padding-top: 16px;
+        border-top: 1px solid var(--border-color, #dee2e6);
+    }
+}

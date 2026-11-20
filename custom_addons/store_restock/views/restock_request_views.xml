@@ -4,14 +4,13 @@
         <field name="name">store.restock.request.list</field>
         <field name="model">store.restock.request</field>
         <field name="arch" type="xml">
-            <list string="Phiếu bổ sung hàng" delete="0" duplicate="0">
-                <field name="name"/>
-                <field name="product_id"/>
-                <field name="quantity"/>
-                <field name="product_uom_id"/>
-                <field name="requester_id"/>
-                <field name="request_date"/>
-                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'submitted'" decoration-success="state == 'approved'" decoration-danger="state == 'rejected'"/>
+            <list string="Phiếu bổ sung hàng" duplicate="0" class="o_restock_list" js_class="store_restock_fixed_list" default_order="id desc">
+                <field name="name" width="120px" class="fw-semibold"/>
+                <field name="product_id" width="340px"/>
+                <field name="quantity" width="110px"/>
+                <field name="requester_id" width="210px"/>
+                <field name="request_date" width="130px"/>
+                <field name="state" width="130px" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'submitted'" decoration-success="state == 'approved'" decoration-danger="state == 'rejected'"/>
             </list>
         </field>
     </record>
@@ -19,34 +18,42 @@
         <field name="name">store.restock.request.form</field>
         <field name="model">store.restock.request</field>
         <field name="arch" type="xml">
-            <form string="Phiếu bổ sung hàng" delete="0" duplicate="0">
+            <form string="Phiếu bổ sung hàng" duplicate="0" class="o_restock_form">
                 <header>
                     <button name="action_submit" type="object" string="Gửi duyệt" class="btn-primary" groups="store_restock.group_restock_employee" invisible="state != 'draft' or requester_id != uid"/>
+                    <button name="action_cancel" type="object" string="Rút yêu cầu" groups="store_restock.group_restock_employee" invisible="state != 'submitted' or requester_id != uid" confirm="Rút yêu cầu này và chuyển phiếu sang Đã hủy?"/>
                     <button name="action_approve" type="object" string="Duyệt" class="btn-primary" groups="store_restock.group_restock_manager" invisible="state != 'submitted' or requester_id == uid"/>
                     <button name="action_open_reject_wizard" type="object" string="Từ chối" groups="store_restock.group_restock_manager" invisible="state != 'submitted' or requester_id == uid"/>
-                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved,rejected"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted" groups="!store_restock.group_restock_manager"/>
+                    <field name="state" widget="statusbar" statusbar_visible="submitted" groups="store_restock.group_restock_manager"/>
                 </header>
                 <sheet>
-                    <div class="oe_title"><h1><field name="name"/></h1></div>
-                    <group>
-                        <group>
+                    <div class="oe_title">
+                        <p class="text-muted mb-1">Phiếu bổ sung hàng</p>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group class="o_restock_details">
+                        <group string="Hàng cần bổ sung" name="restock_items">
+                            <field name="product_id" readonly="state != 'draft' or requester_id != uid" options="{'no_create': True}" placeholder="Chọn sản phẩm cần bổ sung"/>
+                            <field name="quantity" readonly="state != 'draft' or requester_id != uid"/>
+                        </group>
+                        <group string="Thông tin phiếu" name="restock_metadata">
                             <field name="requester_id"/>
                             <field name="request_date"/>
                             <field name="company_id" groups="base.group_multi_company"/>
-                            <field name="product_id" readonly="state != 'draft' or requester_id != uid" options="{'no_create': True}"/>
-                        </group>
-                        <group>
-                            <field name="quantity" readonly="state != 'draft' or requester_id != uid"/>
-                            <field name="product_uom_id"/>
                         </group>
                     </group>
-                    <group>
-                        <field name="reason" readonly="state != 'draft' or requester_id != uid" placeholder="Vì sao cần bổ sung hàng?"/>
-                    </group>
-                    <group string="Xử lý phiếu" invisible="state not in ('approved', 'rejected')">
+                    <div class="o_restock_reason">
+                        <label for="reason"/>
+                        <field name="reason" readonly="state != 'draft' or requester_id != uid" placeholder="Ví dụ: Cần bổ sung hàng cho ca chiều." nolabel="1"/>
+                    </div>
+                    <group string="Kết quả xử lý" class="o_restock_result" invisible="state not in ('approved', 'rejected')">
                         <field name="reviewer_id"/>
                         <field name="reviewed_at"/>
                         <field name="rejection_reason" invisible="state != 'rejected'"/>
+                    </group>
+                    <group string="Yêu cầu đã rút" class="o_restock_result" invisible="state != 'cancelled'">
+                        <field name="cancelled_at"/>
                     </group>
                 </sheet>
             </form>
@@ -60,12 +67,17 @@
                 <field name="name"/>
                 <field name="product_id"/>
                 <field name="requester_id" groups="store_restock.group_restock_manager"/>
-                <filter name="my_requests" string="Phiếu của tôi" domain="[('requester_id', '=', uid)]"/>
+                <filter name="my_requests" string="Phiếu của tôi" domain="[('requester_id', '=', uid)]" groups="!store_restock.group_restock_manager"/>
                 <separator/>
-                <filter name="draft" string="Nháp" domain="[('state', '=', 'draft')]"/>
+                <filter name="draft" string="Nháp" domain="[('state', '=', 'draft')]" groups="!store_restock.group_restock_manager"/>
                 <filter name="submitted" string="Chờ duyệt" domain="[('state', '=', 'submitted')]"/>
                 <filter name="approved" string="Đã duyệt" domain="[('state', '=', 'approved')]"/>
                 <filter name="rejected" string="Từ chối" domain="[('state', '=', 'rejected')]"/>
+                <filter name="cancelled" string="Đã hủy" domain="[('state', '=', 'cancelled')]"/>
+                <separator/>
+                <filter name="group_state" string="Trạng thái" context="{'group_by': 'state'}"/>
+                <filter name="group_date" string="Ngày yêu cầu" context="{'group_by': 'request_date'}"/>
+                <filter name="group_requester" string="Người yêu cầu" context="{'group_by': 'requester_id'}" groups="store_restock.group_restock_manager"/>
             </search>
         </field>
     </record>
