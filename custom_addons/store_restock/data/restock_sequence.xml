@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="sequence_restock_request" model="ir.sequence">
+        <field name="name">Phiếu bổ sung hàng</field>
+        <field name="code">store.restock.request</field>
+        <field name="prefix">BSH-</field>
+        <field name="padding">4</field>
+        <field name="company_id" eval="False"/>
+    </record>
+</odoo>

@@ -11,7 +11,7 @@ pgpass.conf
 # Backup, du lieu Odoo/PostgreSQL va log
 backups/
 filestore/
-data/
+/data/
 *.dump
 *.backup
 *.sql

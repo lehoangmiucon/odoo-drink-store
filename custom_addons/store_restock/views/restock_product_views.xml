@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_restock_product_list_readonly" model="ir.ui.view">
+        <field name="name">store.restock.product.list.readonly</field>
+        <field name="model">product.template</field>
+        <field name="arch" type="xml">
+            <list string="Danh mục sản phẩm" create="0" edit="0" delete="0" import="0" duplicate="0" class="o_restock_catalog" default_order="default_code asc, name asc">
+                <field name="default_code" string="Mã / Tham chiếu" width="170px"/>
+                <field name="name" string="Tên sản phẩm" width="[280px]"/>
+                <field name="categ_id" string="Danh mục" width="220px"/>
+                <field name="uom_id" string="Đơn vị tính" width="120px"/>
+                <field name="store_by" string="Theo dõi tồn" width="150px"/>
+                <field name="barcode" string="Mã vạch" optional="hide" width="170px"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_restock_product_form_readonly" model="ir.ui.view">
+        <field name="name">store.restock.product.form.readonly</field>
+        <field name="model">product.template</field>
+        <field name="arch" type="xml">
+            <form string="Thông tin sản phẩm" create="0" edit="0" delete="0" duplicate="0">
+                <sheet>
+                    <div class="oe_title"><h1><field name="name" readonly="1"/></h1></div>
+                    <group>
+                        <field name="default_code" readonly="1" string="Mã sản phẩm"/>
+                        <field name="categ_id" readonly="1" options="{'no_open': True}"/>
+                        <field name="barcode" readonly="1"/>
+                        <field name="uom_id" readonly="1" options="{'no_open': True}"/>
+                        <field name="store_by" readonly="1" string="Theo dõi tồn"/>
+                    </group>
+                    <p>Để yêu cầu thêm hàng, quay lại Phiếu bổ sung hàng và chọn sản phẩm này. Liên hệ quản lý nếu cần sửa thông tin danh mục.</p>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_restock_product_list_manage" model="ir.ui.view">
+        <field name="name">store.restock.product.list.manage</field>
+        <field name="model">product.template</field>
+        <field name="arch" type="xml">
+            <list string="Danh mục sản phẩm" duplicate="0" class="o_restock_catalog" default_order="default_code asc, name asc">
+                <field name="default_code" string="Mã / Tham chiếu" width="170px"/>
+                <field name="name" string="Tên sản phẩm" width="[280px]"/>
+                <field name="categ_id" string="Danh mục" width="220px"/>
+                <field name="uom_id" string="Đơn vị tính" width="120px"/>
+                <field name="store_by" string="Theo dõi tồn" width="150px"/>
+                <field name="barcode" string="Mã vạch" optional="hide" width="170px"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_restock_product_search" model="ir.ui.view">
+        <field name="name">store.restock.product.search</field>
+        <field name="model">product.template</field>
+        <field name="arch" type="xml">
+            <search string="Tìm sản phẩm">
+                <field name="name" string="Tên hoặc mã" filter_domain="['|', ('name', 'ilike', self), ('default_code', 'ilike', self)]"/>
+                <field name="default_code" string="Mã / Tham chiếu"/>
+                <field name="categ_id" string="Danh mục"/>
+                <field name="barcode" string="Mã vạch"/>
+                <filter name="drinks" string="Đồ uống" domain="[('categ_id', 'child_of', %(category_restock_drinks)d)]"/>
+                <filter name="tracked" string="Có theo dõi tồn" domain="[('is_storable', '=', True)]"/>
+                <separator/>
+                <filter name="missing_code" string="Chưa có mã" domain="[('default_code', '=', False)]"/>
+                <filter name="missing_category" string="Chưa có danh mục" domain="[('categ_id', '=', False)]"/>
+                <separator/>
+                <filter name="group_category" string="Danh mục" context="{'group_by': 'categ_id'}"/>
+            </search>
+        </field>
+    </record>
+    <record id="action_restock_products_readonly" model="ir.actions.act_window">
+        <field name="name">Danh mục sản phẩm</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_restock_product_search"/>
+        <field name="context">{'search_default_drinks': 1}</field>
+        <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'list', 'view_id': ref('view_restock_product_list_readonly')}), (0, 0, {'view_mode': 'form', 'view_id': ref('view_restock_product_form_readonly')})]"/>
+    </record>
+    <record id="action_restock_products_manage" model="ir.actions.act_window">
+        <field name="name">Danh mục sản phẩm</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_restock_product_search"/>
+        <field name="context">{'search_default_drinks': 1, 'default_categ_id': %(category_restock_drinks)d}</field>
+        <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'list', 'view_id': ref('view_restock_product_list_manage')}), (0, 0, {'view_mode': 'form', 'view_id': ref('product.product_template_only_form_view')})]"/>
+    </record>
+    <record id="action_restock_products_menu" model="ir.actions.server">
+        <field name="name">Sản phẩm</field>
+        <field name="model_id" ref="model_store_restock_request"/>
+        <field name="state">code</field>
+        <field name="code">readonly_employee = env.user.has_group('store_restock.group_restock_employee') and not env.user.has_group('store_restock.group_restock_manager') and not env.user.has_group('base.group_system')
+action = env['ir.actions.actions']._for_xml_id('store_restock.action_restock_products_readonly' if readonly_employee else 'store_restock.action_restock_products_manage')</field>
+    </record>
+</odoo>

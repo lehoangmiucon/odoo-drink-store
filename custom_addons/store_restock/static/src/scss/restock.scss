@@ -1,4 +1,32 @@
 // Keep styling within this addon; native selection and responsive sizing remain.
+.o_restock_catalog {
+    .o_list_renderer {
+        width: calc(100% - 32px);
+        max-width: 1440px;
+        margin: 16px auto;
+        border: 1px solid var(--border-color, #dee2e6);
+        border-radius: 8px;
+        overflow: auto;
+    }
+
+    .o_list_table {
+        min-width: 1000px;
+
+        thead th,
+        .o_data_row > td {
+            padding-block: 14px;
+        }
+
+        td[name="default_code"] {
+            font-weight: 600;
+        }
+
+        thead .o_resize {
+            display: none;
+        }
+    }
+}
+
 .o_restock_list {
     .o_list_renderer {
         width: calc(100% - 32px);
@@ -48,6 +76,24 @@
 }
 
 .o_restock_form {
+    .o_restock_receipts .o_list_renderer .o_list_table {
+        thead .o_resize {
+            display: none;
+        }
+
+        th:not([data-name="received_at"]) {
+            .o_list_sortable_icon,
+            .o_list_header_label_spacer {
+                display: none;
+            }
+        }
+
+        th[data-name="quantity"] .o_list_number_th,
+        .o_data_row > td.o_list_number[name="quantity"] {
+            text-align: left;
+        }
+    }
+
     .o_form_sheet {
         max-width: 1120px;
     }

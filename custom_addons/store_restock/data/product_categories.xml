@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="category_restock_drinks" model="product.category">
+        <field name="name">Đồ uống</field>
+    </record>
+    <record id="category_restock_water" model="product.category">
+        <field name="name">Nước suối</field>
+        <field name="parent_id" ref="category_restock_drinks"/>
+    </record>
+    <record id="category_restock_soft_drinks" model="product.category">
+        <field name="name">Nước ngọt</field>
+        <field name="parent_id" ref="category_restock_drinks"/>
+    </record>
+</odoo>

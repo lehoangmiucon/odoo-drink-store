@@ -1,3 +1,5 @@
+import math
+
 from odoo import api, fields, models
 from odoo.exceptions import AccessError, UserError, ValidationError
 
@@ -30,7 +32,8 @@ class RestockRequest(models.Model):
     reason = fields.Text(string='Lý do yêu cầu')
     state = fields.Selection(
         [('draft', 'Nháp'), ('submitted', 'Chờ duyệt'),
-         ('approved', 'Đã duyệt'), ('rejected', 'Từ chối'), ('cancelled', 'Đã hủy')],
+         ('approved', 'Đã duyệt'), ('shipped', 'Đang vận chuyển'), ('received', 'Đã nhập kho'),
+         ('rejected', 'Từ chối'), ('cancelled', 'Đã hủy')],
         string='Trạng thái', default='draft', required=True, readonly=True, copy=False,
     )
     reviewer_id = fields.Many2one('res.users', string='Người xử lý', readonly=True, copy=False)
@@ -61,7 +64,7 @@ class RestockRequest(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         self._require_employee()
-        allowed_fields = {'product_id', 'quantity', 'reason'}
+        allowed_fields = {'product_id', 'quantity', 'reason', 'route_id'}
         server_defaults = {
             'name': 'Mới',
             'requester_id': self.env.uid,
@@ -97,22 +100,28 @@ class RestockRequest(models.Model):
         return super().create(prepared)
 
     def write(self, vals):
-        if set(vals) - {'product_id', 'quantity', 'reason'}:
+        if set(vals) - {'product_id', 'quantity', 'reason', 'route_id'}:
             raise AccessError('Hãy dùng các nút xử lý để chuyển trạng thái phiếu.')
         self._lock_records()
         self._check_own_drafts()
         return super().write(vals)
 
     def unlink(self):
+        self._lock_records()
+        if any(request.outbound_id or request.inbound_id for request in self):
+            raise UserError('Phiếu đã liên kết chuyển kho phải được giữ lại để đối chiếu.')
         if not self.env.user.has_group('base.group_system'):
             self._require_employee()
-            self._lock_records()
             for request in self:
                 if request.requester_id != self.env.user:
                     raise AccessError('Chỉ được xóa phiếu do mình tạo.')
                 if request.state not in ('draft', 'submitted'):
                     raise AccessError('Chỉ được xóa phiếu nháp và phiếu chờ duyệt')
         return super().unlink()
+
+    def _write_workflow(self, values):
+        """Internal transitions only; RPC clients must use guarded action methods."""
+        return super().write(values)
 
     def copy(self, default=None):
         self.ensure_one()
@@ -124,8 +133,10 @@ class RestockRequest(models.Model):
         for request in self:
             if not request.product_id:
                 raise ValidationError('Hãy chọn sản phẩm trước khi gửi duyệt.')
-            if request.product_uom_id.compare(request.quantity, 0) <= 0:
+            if not math.isfinite(request.quantity) or request.product_uom_id.compare(request.quantity, 0) <= 0:
                 raise ValidationError('Số lượng phải lớn hơn 0 theo độ làm tròn của đơn vị tính.')
+            if not math.isclose(request.quantity, request.product_uom_id.round(request.quantity), rel_tol=0, abs_tol=1e-6):
+                raise ValidationError('Số lượng phải đúng bước làm tròn của đơn vị sản phẩm.')
             if not (request.reason or '').strip():
                 raise ValidationError('Hãy nhập lý do yêu cầu trước khi gửi duyệt.')
         return super().write({'state': 'submitted'})

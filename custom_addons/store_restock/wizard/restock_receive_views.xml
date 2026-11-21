@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_restock_receive_wizard_form" model="ir.ui.view">
+        <field name="name">store.restock.receive.wizard.form</field>
+        <field name="model">store.restock.receive.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Siêu thị kiểm nhận hàng">
+                <p>Chỉ xác nhận số hàng đã kiểm đếm thực tế. Nhận thiếu sẽ giữ phần còn lại chờ nhận.</p>
+                <group>
+                    <field name="request_id" options="{'no_open': True}"/>
+                    <field name="remaining_quantity"/>
+                    <field name="quantity"/>
+                    <field name="note" placeholder="Ghi chú giao nhận hoặc chênh lệch (nếu có)"/>
+                </group>
+                <footer>
+                    <button name="action_receive" type="object" string="Xác nhận nhập kho" class="btn-primary"/>
+                    <button string="Đóng" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

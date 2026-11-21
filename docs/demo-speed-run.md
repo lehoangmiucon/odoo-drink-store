@@ -1,29 +1,32 @@
-# Demo bổ sung hàng — 3 đến 4 phút
+# Demo bổ sung hàng hoàn chỉnh — tối 21/11/2026
 
-## Chuẩn bị trước khi chiếu
+Thời lượng 4–5 phút. Quản lý kho tổng ở cửa sổ thường, nhân viên siêu thị ở cửa sổ ẩn danh. Cả hai chọn đúng công ty chứa tuyến. Đăng nhập lại sau đổi quyền.
 
-- Mở sẵn hai phiên đăng nhập: nhân viên ở cửa sổ ẩn danh, quản lý ở cửa sổ thường. Kiểm tra đúng tài khoản.
-- Chọn sẵn sản phẩm Nước suối 500 ml; ghi rõ số lượng đang tính theo đơn vị của sản phẩm. Dùng sản phẩm đồ uống để ví dụ thống nhất.
-- Chuẩn bị một phiếu Chờ duyệt thứ hai để demo từ chối nhanh. Không cần xóa dữ liệu hay đặt lại số phiếu.
-- Mở sẵn ứng dụng, làm mới danh sách; giữ ảnh minh chứng dự phòng khi máy chiếu/mạng gặp trục trặc. Lưu phần đang nhập trước khi chuyển cửa sổ.
+## Chuẩn bị
 
-## Thứ tự trình bày
+- Chọn sản phẩm `[BSH-COLA330] Coca-Cola lon 330 ml (lon)` hoặc `[BSH-500] Nước suối 500 ml (chai)`; kiểm tra kho tổng còn ít nhất 10 khả dụng.
+- Tuyến: **Kho tổng → Siêu thị DEMO**. Chuẩn bị ảnh nhận đủ, nhận 6 + 4 và từ chối để trả lời câu hỏi.
+- Số tồn đã thay đổi sau các lần tập. Ghi số trước–sau, không đọc cố định 100 hoặc 50 nếu đã dùng hàng.
+- Không xóa phiếu cũ, đặt lại mã hay sửa tồn chỉ để bài trình bày đẹp.
 
-| Thời lượng | Thao tác | Lời nói gợi ý |
+## Một vòng 10 lon
+
+| Bước | Thao tác | Lời nói gợi ý |
 | --- | --- | --- |
-| 20 giây | Mở danh sách nhân viên | “Chức năng giúp nhân viên gửi nhu cầu bổ sung hàng, quản lý duyệt hoặc từ chối và lưu kết quả xử lý.” |
-| 60 giây | Nhân viên tạo phiếu, chọn Nước suối 500 ml, số lượng 20, lý do “Cần bổ sung cho ca chiều”, bấm Gửi duyệt | “Hệ thống tự cấp mã và người yêu cầu. Phiếu Nháp riêng cho người tạo; gửi xong chuyển Chờ duyệt và khóa nội dung.” |
-| 45 giây | Chuyển sang quản lý, làm mới danh sách, mở đúng mã vừa tạo rồi Duyệt | “Quản lý thấy phiếu đã gửi. Khi duyệt, hệ thống lưu người xử lý và thời gian.” |
-| 45 giây | Mở phiếu Chờ duyệt đã chuẩn bị, bấm Từ chối, nhập “Hàng hiện tại vẫn đủ cho ca bán”, xác nhận | “Nếu từ chối phải nhập lý do để nhân viên biết kết quả.” |
-| 30 giây | Quay lại nhân viên, làm mới và mở kết quả | “Nhân viên theo dõi được Đã duyệt hoặc Từ chối. Chức năng hiện xử lý yêu cầu và phê duyệt; việc nhập hàng thực tế chưa làm tăng tồn kho tự động.” |
+| 1 — 15 giây | Giới thiệu | “Siêu thị gửi nhu cầu, kho tổng duyệt và gửi hàng, siêu thị kiểm nhận rồi nhập kho.” |
+| 2 — 45 giây | Nhân viên → Mới → chọn tuyến, Coca-Cola, số lượng 10, lý do “Bổ sung cho ca tối” → Gửi duyệt. Nhớ mã BSH | “Phiếu Nháp riêng cho người tạo. Sau gửi, nội dung bị khóa và quản lý thấy phiếu Chờ duyệt.” |
+| 3 — 30 giây | Quản lý tải danh sách, mở đúng mã → Duyệt. Chỉ người/thời gian xử lý và ghi lại số tồn | “Duyệt là đồng ý cấp hàng; tồn kho chưa thay đổi.” |
+| 4 — 30 giây | Quản lý → Kho tổng gửi hàng → xác nhận | “Kho tổng giảm 10. Hàng chuyển vào vị trí đang đi; siêu thị chưa nhận nên chưa tăng tồn.” |
+| 5 — 45 giây | Nhân viên tải phiếu → Siêu thị nhận hàng → thực nhận 10, ghi chú “Đã kiểm đủ 10 lon” → Xác nhận nhập kho | “Nhân viên kiểm đếm số thực tế rồi mới xác nhận nhập.” |
+| 6 — 30 giây | Chỉ Đã nhập kho, Đã nhận 10, Còn chờ nhận 0, tồn và lịch sử | “Tồn siêu thị tăng 10. Hệ thống lưu phiếu nhập, người nhận và thời gian để đối chiếu.” |
 
-Nếu còn 30 giây: thử gửi một phiếu số lượng 0 để chứng minh kiểm tra dữ liệu, sau đó đóng thông báo. Không cần chạy lại mọi ca âm/thiếu trường hoặc đăng nhập nhân viên thứ hai trong buổi speed run; dùng ảnh/báo cáo nếu được hỏi.
+Ví dụ nếu ban đầu kho tổng 50 và siêu thị 0: sau duyệt 50/0; sau gửi 40/0; sau nhận 40/10. Nếu đầu kỳ khác, mức giảm/tăng vẫn là 10.
 
-## Câu hỏi thường gặp
+## Chỉ mở thêm khi được hỏi
 
-- **Mã phiếu không bắt đầu từ 0001?** Sequence tiếp tục tăng dù xóa dữ liệu thử, tránh tái dùng mã.
-- **Nhân viên sửa hoặc xóa được gì?** Sửa nội dung khi Nháp; xóa phiếu của mình khi Nháp/Chờ duyệt. Có thể Rút yêu cầu đang Chờ duyệt để giữ lịch sử. Phiếu đã xử lý bị khóa với nhân viên.
-- **Phân quyền kiểm tra ở đâu?** Máy chủ kiểm tra, không chỉ ẩn nút; nhân viên khác không đọc được phiếu và không thể tự duyệt.
-- **Đã hoàn chỉnh chưa?** Luồng yêu cầu/phê duyệt đủ để demo. Cần đối chiếu bộ kiểm thử của nhóm và chạy lại trên máy thành viên trước nghiệm thu; nhập kho tự động là phần mở rộng cần chốt riêng.
+- **Nhận thiếu:** mở phiếu đã nhận 6 rồi 4. Mỗi dòng Thực nhận là một lần kiểm nhận. Nhận lần đầu còn chờ 4; nhận đủ mới thành Đã nhập kho.
+- **Từ chối:** mở phiếu có lý do, thanh trạng thái chỉ hiện **Chờ duyệt → Từ chối**. Không phát sinh chuyển kho cho nhánh này.
+- **Phân quyền:** nhân viên xem/chọn sản phẩm, không tạo/sửa/xóa danh mục; quản lý duyệt và gửi hàng; người tạo phiếu xác nhận nhận.
+- **Phạm vi:** chuyển kho nội bộ cùng công ty, một sản phẩm mỗi yêu cầu, theo dõi theo số lượng; chưa có lô/serial, giao thiếu từ kho tổng, mất/hỏng hoặc trả hàng riêng.
 
-Không cần thêm tính năng mới ngay trước buổi demo. Tập chuyển hai cửa sổ và nhận diện đúng mã phiếu một lượt là ưu tiên.
+Nếu lỗi: giữ nguyên thông báo và mã phiếu, chụp ảnh, dùng ảnh minh chứng dự phòng. Không xác nhận nhận khi chưa hiểu số thực nhận, không bấm lặp và không sửa tay phiếu kho liên kết.

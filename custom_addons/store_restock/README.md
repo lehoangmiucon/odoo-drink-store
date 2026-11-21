@@ -1,6 +1,8 @@
 # Yêu cầu bổ sung hàng
 
-Addon dành cho Odoo Community `20.0-20261115` trên máy Trọng. Nhân viên kho lập và gửi phiếu, quản lý duyệt hoặc từ chối. Model phiếu là `store.restock.request`. Bản đầu mỗi phiếu có một sản phẩm.
+Addon dành cho Odoo Community `20.0-20261115` trên máy Trọng, bản hiện tại **20.0.2.0.0**, phụ thuộc `stock`. Nhân viên siêu thị lập yêu cầu; quản lý kho tổng duyệt/từ chối và gửi hàng; nhân viên kiểm nhận rồi xác nhận nhập kho. Model phiếu là `store.restock.request`, một sản phẩm mỗi phiếu, chuyển kho nội bộ cùng công ty, không lô/serial.
+
+Hướng dẫn đầy đủ cho bản hiện tại: [cài đặt và nâng cấp](../../docs/huong-dan-cai-dat.md), [demo giao nhận](../../docs/demo-speed-run.md), [kết quả 21/11](../../docs/ket-qua-2026-11-21.md). Các bước bên dưới mô tả nền tảng; khi cài cần chuẩn bị thêm tuyến và tồn kho theo hướng dẫn mới.
 
 ## Cài vào Odoo
 
@@ -24,9 +26,11 @@ Addon dành cho Odoo Community `20.0-20261115` trên máy Trọng. Nhân viên k
 | 6 | Nhân viên | Tạo phiếu số lượng 0 hoặc âm, thử gửi và chụp thông báo bị chặn. Thử thiếu sản phẩm và lý do rỗng. |
 | 7 | Nhân viên | Kiểm tra phiếu đã gửi khóa nội dung và các nút duyệt/từ chối ẩn. Dùng nhân viên thứ hai để kiểm tra phạm vi xem. |
 
-Quyền và chuyển trạng thái được kiểm tra tại máy chủ. Máy chủ chặn tự duyệt ngay cả khi tài khoản có cả hai vai trò. Duyệt phiếu giữ nguyên tồn kho. Menu Sản phẩm chỉ xuất hiện cho người được cấp quyền quản lý sản phẩm.
+Quyền và chuyển trạng thái được kiểm tra tại máy chủ. Máy chủ chặn tự duyệt ngay cả khi tài khoản có cả hai vai trò. Duyệt giữ nguyên tồn; gửi hàng giảm kho tổng và chuyển sang trung chuyển; nhận hàng tăng tồn siêu thị. Nhận thiếu tạo backorder và lịch sử từng lần. Menu Sản phẩm cho nhân viên chỉ xem/chọn; admin quản lý danh mục theo quyền sản phẩm.
 
 ## Cập nhật và phiên bản
+
+Phiên bản `20.0.2.0.0` thêm Inventory, cấu hình tuyến, phiếu chuyển kho gốc, gửi hàng, nhận từng phần, lịch sử nhận và số tồn hiện tại. Có kiểm tra chống gửi/nhận trùng, dữ liệu không hợp lệ và trái quyền; giữ phiếu đã liên kết kho để đối chiếu. Danh mục đồ uống có bảng và tìm kiếm riêng theo vai trò. Lịch sử nhận khóa kéo giãn, căn trái số và chỉ sắp xếp theo thời gian. Chín test tích hợp nằm trong `tests/test_fulfillment.py`. Script dữ liệu thử ở `scripts/setup_restock_demo.py` tại gốc repo; chạy lại không reset tồn. Bắt buộc cài `stock`, nâng cấp addon và restart Odoo khi nhận mã Python mới.
 
 Phiên bản `20.0.1.0.8` khóa kéo giãn cột và bỏ sắp xếp bằng tiêu đề trong danh sách phiếu; mặc định phiếu mới nhất đứng trước. Bộ lọc và nhóm trong ô tìm kiếm vẫn dùng bình thường. Renderer riêng chỉ áp dụng cho danh sách bổ sung hàng, không thay đổi các ứng dụng Odoo khác. Sau nâng cấp cần khởi động lại Odoo để nạp khai báo asset mới.
 

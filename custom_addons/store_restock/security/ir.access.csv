@@ -1,2 +1,10 @@
 id,name,model_id:id,group_id:id,operation,domain
 access_restock_reject_manager,Từ chối phiếu,model_store_restock_reject_wizard,group_restock_manager,crud,
+access_restock_receive_employee,Nhận hàng bổ sung,model_store_restock_receive_wizard,group_restock_employee,crud,
+access_restock_route_company,Tuyến trong công ty được phép,model_store_restock_route,,crud,"[('company_id', 'in', company_ids)]"
+access_restock_route_admin,Cấu hình tuyến,model_store_restock_route,base.group_system,crud,
+access_restock_route_employee,Nhân viên đọc tuyến,model_store_restock_route,group_restock_employee,r,
+access_restock_route_manager,Quản lý đọc tuyến,model_store_restock_route,group_restock_manager,r,
+access_restock_receipt_company,Lần nhận trong công ty được phép,model_store_restock_receipt,,r,"[('company_id', 'in', company_ids)]"
+access_restock_receipt_employee,Nhân viên đọc lần nhận của mình,model_store_restock_receipt,group_restock_employee,r,"[('request_id.requester_id', '=', user.id)]"
+access_restock_receipt_manager,Quản lý đọc lần nhận,model_store_restock_receipt,group_restock_manager,r,

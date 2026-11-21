@@ -49,4 +49,19 @@
         <field name="operation">d</field>
         <field name="domain">[('requester_id', '=', user.id), ('state', 'in', ['draft', 'submitted'])]</field>
     </record>
+    <!-- Global restrictions cannot be overridden by additive product grants.
+         System admins and users acting as restock managers retain their own
+         native product permissions; this rule does not grant product access. -->
+    <record id="rule_restock_employee_product_template_readonly" model="ir.access">
+        <field name="name">Nhân viên siêu thị chỉ đọc danh mục sản phẩm</field>
+        <field name="model_id" ref="product.model_product_template"/>
+        <field name="operation">cud</field>
+        <field name="domain">[(0, '=', 1)] if user.has_group('store_restock.group_restock_employee') and not user.has_group('store_restock.group_restock_manager') and not user.has_group('base.group_system') else []</field>
+    </record>
+    <record id="rule_restock_employee_product_variant_readonly" model="ir.access">
+        <field name="name">Nhân viên siêu thị chỉ đọc biến thể sản phẩm</field>
+        <field name="model_id" ref="product.model_product_product"/>
+        <field name="operation">cud</field>
+        <field name="domain">[(0, '=', 1)] if user.has_group('store_restock.group_restock_employee') and not user.has_group('store_restock.group_restock_manager') and not user.has_group('base.group_system') else []</field>
+    </record>
 </odoo>

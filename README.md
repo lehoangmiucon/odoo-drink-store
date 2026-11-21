@@ -1,8 +1,8 @@
 # Quản lý bán hàng và tồn kho cửa hàng đồ uống
 
-Dự án nhóm triển khai trên Odoo Community với Contacts, Purchase, Inventory và Point of Sale. Phần tùy chỉnh đã triển khai trên máy Trọng là module yêu cầu bổ sung hàng tại `custom_addons/store_restock/`, phiên bản `20.0.1.0.0`.
+Dự án nhóm triển khai trên Odoo Community với Contacts, Purchase, Inventory và Point of Sale. Phần tùy chỉnh đã triển khai trên máy Trọng là module yêu cầu bổ sung hàng tại `custom_addons/store_restock/`, phiên bản `20.0.2.0.0`: gửi yêu cầu, duyệt/từ chối, kho tổng gửi và siêu thị nhận hàng, cập nhật tồn qua Inventory.
 
-Hướng dẫn lấy mã và cài trên máy thành viên nằm trong [hướng dẫn cài đặt](docs/huong-dan-cai-dat.md). [Kết quả ngày 19/11](docs/ket-qua-2026-11-19.md) ghi các ca đã chạy và thông tin backup.
+Hướng dẫn lấy mã, cài Inventory, nâng cấp và tạo dữ liệu thử nằm trong [hướng dẫn cài đặt](docs/huong-dan-cai-dat.md). Xem [kết quả ngày 21/11](docs/ket-qua-2026-11-21.md) và [demo speed run](docs/demo-speed-run.md). Kết quả 19/11 và 20/11 được giữ như các mốc lịch sử.
 
 ## Môi trường
 

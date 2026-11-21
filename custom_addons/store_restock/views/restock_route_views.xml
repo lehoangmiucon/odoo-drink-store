@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_restock_route_list" model="ir.ui.view">
+        <field name="name">store.restock.route.list</field>
+        <field name="model">store.restock.route</field>
+        <field name="arch" type="xml">
+            <list string="Tuyến bổ sung">
+                <field name="name"/><field name="company_id"/><field name="active"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_restock_route_form" model="ir.ui.view">
+        <field name="name">store.restock.route.form</field>
+        <field name="model">store.restock.route</field>
+        <field name="arch" type="xml">
+            <form string="Tuyến bổ sung">
+                <sheet>
+                    <group>
+                        <field name="name"/><field name="active"/><field name="company_id"/>
+                        <field name="source_id" domain="[('usage','=','internal'),('company_id','=',company_id)]"/>
+                        <field name="transit_id" domain="[('usage','=','transit'),('company_id','=',company_id)]"/>
+                        <field name="destination_id" domain="[('usage','=','internal'),('company_id','=',company_id)]"/>
+                        <field name="picking_type_id" domain="[('code','=','internal'),('company_id','=',company_id)]"/>
+                    </group>
+                    <p>Tuyến được chụp lại khi duyệt phiếu. Thay đổi cấu hình chỉ áp dụng cho các phiếu duyệt sau đó.</p>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_restock_routes" model="ir.actions.act_window">
+        <field name="name">Tuyến bổ sung</field><field name="res_model">store.restock.route</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

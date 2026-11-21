@@ -24,10 +24,14 @@
                     <button name="action_cancel" type="object" string="Rút yêu cầu" groups="store_restock.group_restock_employee" invisible="state != 'submitted' or requester_id != uid" confirm="Rút yêu cầu này và chuyển phiếu sang Đã hủy?"/>
                     <button name="action_approve" type="object" string="Duyệt" class="btn-primary" groups="store_restock.group_restock_manager" invisible="state != 'submitted' or requester_id == uid"/>
                     <button name="action_open_reject_wizard" type="object" string="Từ chối" groups="store_restock.group_restock_manager" invisible="state != 'submitted' or requester_id == uid"/>
-                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted" groups="!store_restock.group_restock_manager"/>
-                    <field name="state" widget="statusbar" statusbar_visible="submitted" groups="store_restock.group_restock_manager"/>
+                    <button name="action_dispatch" type="object" string="Kho tổng gửi hàng" class="btn-primary" groups="store_restock.group_restock_manager" invisible="state != 'approved'" confirm="Xác nhận hàng đã sẵn sàng rời kho tổng?"/>
+                    <button name="action_open_receive_wizard" type="object" string="Siêu thị nhận hàng" class="btn-primary" groups="store_restock.group_restock_employee" invisible="state != 'shipped' or requester_id != uid"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved,shipped,received" groups="!store_restock.group_restock_manager" invisible="state == 'rejected'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="submitted,approved,shipped,received" groups="store_restock.group_restock_manager" invisible="state == 'rejected'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="submitted,rejected" invisible="state != 'rejected'"/>
                 </header>
                 <sheet>
+                    <field name="company_id" invisible="1"/>
                     <div class="oe_title">
                         <p class="text-muted mb-1">Phiếu bổ sung hàng</p>
                         <h1><field name="name"/></h1>
@@ -38,6 +42,7 @@
                             <field name="quantity" readonly="state != 'draft' or requester_id != uid"/>
                         </group>
                         <group string="Thông tin phiếu" name="restock_metadata">
+                            <field name="route_id" readonly="state != 'draft' or requester_id != uid" options="{'no_create': True, 'no_open': True}" domain="[('company_id','=',company_id)]"/>
                             <field name="requester_id"/>
                             <field name="request_date"/>
                             <field name="company_id" groups="base.group_multi_company"/>
@@ -47,11 +52,31 @@
                         <label for="reason"/>
                         <field name="reason" readonly="state != 'draft' or requester_id != uid" placeholder="Ví dụ: Cần bổ sung hàng cho ca chiều." nolabel="1"/>
                     </div>
-                    <group string="Kết quả xử lý" class="o_restock_result" invisible="state not in ('approved', 'rejected')">
+                    <group string="Kết quả xử lý" class="o_restock_result" invisible="state not in ('approved', 'rejected', 'shipped', 'received')">
                         <field name="reviewer_id"/>
                         <field name="reviewed_at"/>
                         <field name="rejection_reason" invisible="state != 'rejected'"/>
                     </group>
+                    <group string="Giao nhận hàng" invisible="not outbound_ref">
+                        <group>
+                            <field name="source_name"/><field name="destination_name"/>
+                            <field name="outbound_ref"/><field name="inbound_ref" invisible="not inbound_ref"/>
+                        </group>
+                        <group>
+                            <field name="shipped_by"/><field name="shipped_at"/>
+                            <field name="received_quantity"/><field name="remaining_quantity"/>
+                            <field name="central_stock"/><field name="supermarket_stock"/>
+                        </group>
+                    </group>
+                    <field name="receipt_ids" widget="store_restock_receipts" nolabel="1" invisible="not receipt_ids" class="o_restock_receipts">
+                        <list create="0" edit="0" delete="0" default_order="received_at desc, id desc">
+                            <field name="picking_ref" width="210px"/>
+                            <field name="quantity" width="110px"/>
+                            <field name="received_by" width="220px"/>
+                            <field name="received_at" width="180px"/>
+                            <field name="note" width="240px"/>
+                        </list>
+                    </field>
                     <group string="Yêu cầu đã rút" class="o_restock_result" invisible="state != 'cancelled'">
                         <field name="cancelled_at"/>
                     </group>
@@ -72,6 +97,8 @@
                 <filter name="draft" string="Nháp" domain="[('state', '=', 'draft')]" groups="!store_restock.group_restock_manager"/>
                 <filter name="submitted" string="Chờ duyệt" domain="[('state', '=', 'submitted')]"/>
                 <filter name="approved" string="Đã duyệt" domain="[('state', '=', 'approved')]"/>
+                <filter name="shipped" string="Đang vận chuyển" domain="[('state', '=', 'shipped')]"/>
+                <filter name="received" string="Đã nhập kho" domain="[('state', '=', 'received')]"/>
                 <filter name="rejected" string="Từ chối" domain="[('state', '=', 'rejected')]"/>
                 <filter name="cancelled" string="Đã hủy" domain="[('state', '=', 'cancelled')]"/>
                 <separator/>
@@ -89,5 +116,6 @@
     </record>
     <menuitem id="menu_store_restock_root" name="Yêu cầu bổ sung hàng" sequence="25" groups="store_restock.group_restock_employee,store_restock.group_restock_manager"/>
     <menuitem id="menu_store_restock_requests" name="Phiếu bổ sung hàng" parent="menu_store_restock_root" action="action_store_restock_requests" sequence="10"/>
-    <menuitem id="menu_store_restock_products" name="Sản phẩm" parent="menu_store_restock_root" action="product.product_template_action_all" sequence="20" groups="product.group_product_manager"/>
+    <menuitem id="menu_store_restock_products" name="Sản phẩm" parent="menu_store_restock_root" action="action_restock_products_menu" sequence="20" groups="product.group_product_manager,store_restock.group_restock_employee"/>
+    <menuitem id="menu_restock_routes" name="Cấu hình tuyến" parent="menu_store_restock_root" action="action_restock_routes" sequence="30" groups="base.group_system"/>
 </odoo>
